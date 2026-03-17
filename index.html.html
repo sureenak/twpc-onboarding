@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thai Wah Onboarding Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Thai Wah Next brand palette extracted from logo */
+  --brand-navy:#0D2B6B;      /* deep navy */
+  --brand-blue:#1A5CB8;      /* royal blue */
+  --brand-sky:#2E8FE0;       /* sky blue */
+  --brand-light:#5BB3F0;     /* light blue accent */
+  --brand-grad:linear-gradient(135deg,#0D2B6B 0%,#1A5CB8 45%,#2E8FE0 100%);
+  --brand-grad-h:linear-gradient(135deg,#0a2255 0%,#154fa0 45%,#2278c8 100%);
+
+  /* associate lane — sky blue tint */
+  --teal:#1A5CB8;--teal-l:#E8F3FC;--teal-m:#2E8FE0;
+  /* manager lane — deeper navy */
+  --purple:#0D2B6B;--purple-l:#E4EBF8;--purple-m:#1A5CB8;
+
+  --gray:#5A6070;--gray-l:#F0F2F5;--gray-m:#8A92A0;
+  --amber:#B87A10;--amber-l:#FEF3DC;--amber-m:#E8A020;
+  --green:#1A7A45;--green-l:#E3F5EC;--green-m:#28A05A;
+  --coral:#B83020;--coral-l:#FCEAE7;--coral-m:#D84530;
+  --blue:#1A5CB8;--blue-l:#E8F3FC;--blue-m:#2E8FE0;
+
+  --bg:#F4F6FA;--card:#FFFFFF;--text:#1A1E2E;--muted:#5A6070;
+  --border:rgba(13,43,107,0.10);
+  --sh:0 2px 16px rgba(13,43,107,.08);
+  --shl:0 8px 32px rgba(13,43,107,.18);
+  --font-body:'Barlow',sans-serif;
+  --font-display:'Barlow Condensed',sans-serif;
+}
+body.lang-th{--font-body:'Sarabun',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;}
+.screen{display:none;}.screen.active{display:block;}
+
+/* ── LANG SWITCHER ── */
+.lang-bar{position:fixed;top:14px;right:18px;z-index:9999;display:flex;gap:3px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border:1px solid rgba(13,43,107,.12);border-radius:30px;padding:4px;box-shadow:0 2px 12px rgba(13,43,107,.12);}
+.lang-btn{background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted);padding:5px 14px;border-radius:22px;transition:all .18s;white-space:nowrap;}
+.lang-btn.active{background:var(--brand-grad);color:#fff;box-shadow:0 2px 8px rgba(13,43,107,.25);}
+.lang-btn:hover:not(.active){background:var(--teal-l);color:var(--brand-navy);}
+
+/* ── LANDING HEADER ── */
+.lh{background:var(--brand-grad);padding:52px 48px 64px;position:relative;overflow:hidden;}
+.lh::before{content:'STRONGER FASTER BETTER';position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-family:var(--font-display);font-size:96px;font-weight:800;letter-spacing:-.02em;color:rgba(255,255,255,.04);white-space:nowrap;pointer-events:none;}
+.lh::after{content:'';position:absolute;top:-60px;right:-60px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.04);}
+.lh-accent{position:absolute;bottom:-80px;left:-40px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.03);}
+.lh-in{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+.corp-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);color:rgba(255,255,255,.92);font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:4px;margin-bottom:22px;border:1px solid rgba(255,255,255,.18);}
+.lh h1{font-family:var(--font-display);font-size:46px;color:#fff;font-weight:800;line-height:1.08;margin-bottom:6px;letter-spacing:-.01em;text-transform:uppercase;}
+body.lang-th .lh h1{font-family:'Sarabun',sans-serif;font-size:36px;font-weight:700;text-transform:none;letter-spacing:0;}
+.lh-tagline{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-light);margin-bottom:14px;}
+.lh p{color:rgba(255,255,255,.75);font-size:15px;font-weight:400;max-width:500px;line-height:1.65;}
+
+/* ── LANDING BODY ── */
+.lb{max-width:780px;margin:0 auto;padding:44px 48px 60px;}
+.lq{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:.01em;text-transform:uppercase;color:var(--brand-navy);margin-bottom:6px;}
+body.lang-th .lq{font-family:'Sarabun',sans-serif;font-size:24px;font-weight:700;text-transform:none;letter-spacing:0;}
+.ls{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.jgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:580px){.jgrid{grid-template-columns:1fr;}}
+
+/* ── JOURNEY CARDS ── */
+.jcard{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:22px 22px 44px;cursor:pointer;transition:all .2s ease;text-align:left;position:relative;overflow:hidden;}
+.jcard:hover{transform:translateY(-3px);box-shadow:var(--shl);border-color:transparent;}
+.jcard::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;}
+.jc-tm::before{background:var(--brand-grad);}
+.jc-td::before{background:linear-gradient(90deg,var(--amber),var(--amber-m));}
+.jc-kh::before{background:linear-gradient(90deg,var(--coral),var(--coral-m));}
+.jc-vn::before{background:linear-gradient(90deg,#1A8C5B,#28C07A);}
+.jc-cn::before{background:linear-gradient(90deg,#8B1A1A,#C43030);}
+.jflag{font-size:28px;margin-bottom:12px;display:block;}
+.jcountry{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.jc-tm .jcountry{color:var(--brand-blue);}
+.jc-td .jcountry{color:var(--amber);}
+.jc-kh .jcountry{color:var(--coral);}
+.jc-vn .jcountry{color:#1A8C5B;}
+.jc-cn .jcountry{color:#8B1A1A;}
+.jtype{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.01em;color:var(--text);margin-bottom:8px;line-height:1.2;}
+.jdesc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:14px;}
+.jpills{display:flex;flex-wrap:wrap;gap:5px;}
+.pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;letter-spacing:.02em;}
+.pt{background:var(--teal-l);color:var(--brand-blue);}
+.pa{background:var(--amber-l);color:var(--amber);}
+.pk{background:var(--coral-l);color:var(--coral);}
+.pv{background:#E3F5EC;color:#1A7A45;}
+.pc{background:#FCEAE7;color:#8B1A1A;}
+.pg{background:var(--gray-l);color:var(--gray);}
+.jarr{position:absolute;bottom:18px;right:18px;font-size:16px;color:var(--gray-m);transition:transform .2s,color .2s;}
+.jcard:hover .jarr{transform:translateX(4px);color:var(--brand-blue);}
+
+/* ── JOURNEY NAV ── */
+.jnav{background:var(--card);border-bottom:2px solid var(--brand-navy);padding:0 48px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(13,43,107,.10);}
+.back-btn{background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--muted);padding:16px 0;display:flex;align-items:center;gap:6px;transition:color .15s;}
+.back-btn:hover{color:var(--brand-blue);}
+.ndiv{color:var(--border);font-size:18px;}
+.ntitle{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--brand-navy);padding:16px 0;}
+
+/* ── JOURNEY HEADER ── */
+.jhdr{padding:28px 48px 22px;border-bottom:1px solid var(--border);max-width:900px;margin:0 auto;}
+.jhdr-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px;}
+.jh-flag{font-size:32px;}
+.jsub{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.jtitle{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;color:var(--text);}
+body.lang-th .jtitle{font-family:'Sarabun',sans-serif;text-transform:none;letter-spacing:0;font-size:24px;font-weight:700;}
+.jdescr{font-size:14px;color:var(--muted);line-height:1.65;margin-top:8px;}
+
+/* ── LANE BAR ── */
+.lanebar{background:var(--brand-navy);padding:0 48px;}
+.lanebar-in{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 80px 1fr;}
+.ltag{padding:10px 0;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.ltag.assoc{color:var(--brand-light);}
+.ltag.mgr{color:#9EC8F8;text-align:right;}
+.ltag.mid{text-align:center;color:rgba(255,255,255,.4);font-size:10px;}
+
+/* ── TIMELINE ── */
+.jcontent{padding:24px 48px 60px;max-width:900px;margin:0 auto;}
+.mrow{display:grid;grid-template-columns:1fr 80px 1fr;align-items:start;margin-bottom:4px;}
+.tcenter{display:flex;flex-direction:column;align-items:center;padding-top:10px;position:relative;}
+.tline{position:absolute;top:0;bottom:-4px;left:50%;width:2px;background:linear-gradient(to bottom,var(--brand-blue),var(--brand-sky));opacity:.25;transform:translateX(-50%);z-index:0;}
+.tdot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:9px;font-weight:700;text-align:center;line-height:1.2;z-index:1;position:relative;flex-shrink:0;}
+.dd1{background:var(--brand-grad);color:#fff;border:none;box-shadow:0 3px 10px rgba(13,43,107,.3);}
+.dw1{background:var(--gray-l);color:var(--gray);border:1.5px solid var(--gray-m);}
+.dd15{background:linear-gradient(135deg,var(--amber),var(--amber-m));color:#fff;border:none;box-shadow:0 3px 10px rgba(184,122,16,.3);}
+.dd20{background:linear-gradient(135deg,#1A8C5B,#28C07A);color:#fff;border:none;box-shadow:0 3px 10px rgba(26,140,91,.3);}
+.dd45{background:linear-gradient(135deg,#0D2B6B,#1A5CB8);color:#fff;border:none;box-shadow:0 3px 10px rgba(13,43,107,.35);}
+.ddprob{background:linear-gradient(135deg,#1A7A45,#28C07A);color:#fff;border:none;box-shadow:0 3px 10px rgba(26,122,69,.35);}
+.ccol{display:flex;flex-direction:column;gap:8px;padding:4px 8px;}
+.ccol.right{align-items:flex-end;}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;transition:all .2s;width:100%;text-align:left;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.card.assoc::before{background:var(--brand-grad);}
+.card.mgr::before{background:linear-gradient(to bottom,var(--brand-navy),var(--brand-blue));}
+.card:hover{box-shadow:var(--shl);transform:translateY(-1px);border-color:transparent;}
+.card.assoc:hover,.card.assoc.active{background:var(--teal-l);}
+.card.mgr:hover,.card.mgr.active{background:var(--purple-l);}
+.card.active{box-shadow:var(--shl);}
+.card.assoc.active{border-color:var(--brand-sky);}
+.card.mgr.active{border-color:var(--brand-blue);}
+.clbl{font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.assoc .clbl{color:var(--brand-blue);}
+.mgr .clbl{color:var(--brand-navy);}
+.ctitle{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:2px;}
+.csub{font-size:11px;color:var(--muted);line-height:1.4;}
+.carr{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-m);opacity:0;transition:opacity .2s;}
+.assoc .carr{right:12px;}
+.mgr .carr{left:12px;}
+.card:hover .carr,.card.active .carr{opacity:1;}
+
+/* ── DETAIL PANEL ── */
+.dpanel{display:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px 30px;margin:10px 0 18px;box-shadow:var(--sh);animation:sli .22s ease;position:relative;}
+.dpanel.show{display:block;}
+@keyframes sli{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.dclose{position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;color:var(--muted);padding:4px 6px;border-radius:6px;transition:background .15s;}
+.dclose:hover{background:var(--gray-l);}
+.dtag{display:inline-block;font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:12px;}
+.dtag.assoc{background:var(--teal-l);color:var(--brand-blue);}
+.dtag.mgr{background:var(--purple-l);color:var(--brand-navy);}
+.dhead{font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;color:var(--brand-navy);margin-bottom:4px;}
+body.lang-th .dhead{font-family:'Sarabun',sans-serif;text-transform:none;letter-spacing:0;font-size:20px;font-weight:700;color:var(--brand-navy);}
+.dwhen{font-size:12px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.dwhen::before{content:'🕐';font-size:12px;}
+.dbody{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.dsteps{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.dsteps li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--text);line-height:1.5;}
+.sn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.assoc .sn{background:var(--brand-grad);color:#fff;}
+.mgr .sn{background:var(--brand-navy);color:#fff;}
+.dtip{background:var(--amber-l);border-left:4px solid var(--amber-m);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--text);margin-top:14px;line-height:1.55;}
+.dtip strong{color:var(--amber);font-weight:700;}
+.dnote{background:var(--teal-l);border-left:4px solid var(--brand-blue);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--text);margin-top:14px;line-height:1.55;}
+.dnote strong{color:var(--brand-blue);font-weight:700;}
+.srow{height:24px;display:grid;grid-template-columns:1fr 80px 1fr;}
+.sline{grid-column:2;display:flex;justify-content:center;}
+.sline::after{content:'';width:2px;height:100%;background:linear-gradient(to bottom,var(--brand-blue),var(--brand-sky));opacity:.2;}
+.crow{display:flex;justify-content:center;margin-top:24px;}
+.cbadge{background:var(--brand-grad);color:#fff;border-radius:6px;padding:12px 32px;font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,43,107,.25);}
+.cbadge::before{content:'✓';font-size:15px;}
+.footer{text-align:center;padding:20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);background:var(--card);}
+
+/* ── MOCKUP ── */
+.mock-screen{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(13,43,107,.07);margin-top:8px;}
+.mock-titlebar{background:#EEF2F9;border-bottom:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;}
+.mock-titlebar span{font-size:13px;font-weight:600;color:var(--brand-navy);}
+.mock-icons{display:flex;gap:6px;}
+.mock-icon{width:18px;height:18px;border-radius:4px;background:var(--gray-l);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);}
+.mock-body{padding:14px 16px;}
+.mock-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
+.mock-row:last-child{margin-bottom:0;}
+.mock-lbl{font-size:12px;color:var(--muted);min-width:105px;padding-top:8px;flex-shrink:0;}
+.req{color:#c0392b;margin-left:2px;}
+.mock-input{flex:1;border:1.5px solid var(--brand-blue);border-radius:6px;padding:7px 10px;font-size:12px;background:#fff;display:flex;align-items:center;gap:6px;}
+.mock-chip{display:flex;align-items:center;gap:5px;background:var(--teal-l);border-radius:4px;padding:2px 7px;font-size:12px;color:var(--brand-navy);font-weight:500;}
+.mock-cal{color:var(--brand-blue);font-size:13px;margin-left:auto;}
+.tmpl-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.tmpl-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:var(--font-display);letter-spacing:.04em;}
+.tb-blue{background:var(--teal-l);color:var(--brand-blue);}
+.tb-amber{background:var(--amber-l);color:var(--amber);}
+.tmpl-note{font-size:12px;color:var(--muted);}
+.mock-search{background:#fff;border:2px solid var(--brand-blue);border-radius:24px;padding:9px 16px;display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px;}
+.mock-search-q{flex:1;color:var(--text);font-weight:500;}
+.mock-search-x{color:var(--muted);}
+.inst-steps{display:flex;flex-direction:column;gap:14px;margin:14px 0;}
+.inst-step{display:flex;gap:12px;align-items:flex-start;}
+.inst-num{width:26px;height:26px;border-radius:50%;background:var(--brand-grad);color:#fff;font-family:var(--font-display);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;box-shadow:0 2px 6px rgba(13,43,107,.2);}
+.inst-body{flex:1;}
+.inst-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4;}
+.inst-sub{font-size:13px;color:var(--muted);line-height:1.5;}
+.date-hint{background:var(--amber-l);border-left:4px solid var(--amber-m);border-radius:0 6px 6px 0;padding:8px 12px;font-size:12px;color:var(--text);margin-top:8px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<!-- LANGUAGE SWITCHER -->
+<div class="lang-bar">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" id="btn-th" onclick="setLang('th')">🇹🇭 ภาษาไทย</button>
+</div>
+
+<!-- LANDING -->
+<div id="landing" class="screen active">
+  <div class="lh">
+    <div class="lh-accent"></div>
+    <div class="lh-in">
+      <div class="corp-tag">MY THAI WAH NEXT</div>
+      <div class="lh-tagline">Stronger · Faster · Better</div>
+      <h1 id="lh-title">Welcome to Thai Wah —<br>Your Onboarding Journey</h1>
+      <p id="lh-sub">A step-by-step guide to your first 45 days. Select your profile below to view the journey that applies to you.</p>
+    </div>
+  </div>
+  <div class="lb">
+    <div class="lq" id="lq-text">Which onboarding journey is this for?</div>
+    <div class="ls" id="ls-text">Each associate type has a different timeline and set of tasks. Select the one that matches your role and location.</div>
+    <div class="jgrid">
+
+      <div class="jcard jc-tm" onclick="showJourney('th-monthly')">
+        <span class="jflag">🇹🇭</span>
+        <div class="jcountry" id="jc-tm-country">Thailand</div>
+        <div class="jtype" id="jc-tm-type">Monthly Associate</div>
+        <div class="jdesc" id="jc-tm-desc">Full journey with probation objectives, review documents, and onboarding survey at Day 15.</div>
+        <div class="jpills"><span class="pill pt">Day 1</span><span class="pill pt">Week 1</span><span class="pill pt">Day 15</span><span class="pill pt">Day 45</span></div>
+        <span class="jarr">→</span>
+      </div>
+
+      <div class="jcard jc-td" onclick="showJourney('th-daily')">
+        <span class="jflag">🇹🇭</span>
+        <div class="jcountry" id="jc-td-country">Thailand</div>
+        <div class="jtype" id="jc-td-type">Daily Associate</div>
+        <div class="jdesc" id="jc-td-desc">Streamlined Day 1 onboarding. Profile setup and welcome message. No survey or review documents.</div>
+        <div class="jpills"><span class="pill pa">Day 1</span><span class="pill pg" id="jc-td-pill">Profile setup only</span></div>
+        <span class="jarr">→</span>
+      </div>
+
+      <div class="jcard jc-kh" onclick="showJourney('cambodia')">
+        <span class="jflag">🇰🇭</span>
+        <div class="jcountry" id="jc-kh-country">Cambodia</div>
+        <div class="jtype" id="jc-kh-type">All Associate Types</div>
+        <div class="jdesc" id="jc-kh-desc">Localised journey with first week wrap-up, review documents, and survey at Day 15. HR check-in at Day 45.</div>
+        <div class="jpills"><span class="pill pk">Day 1</span><span class="pill pk">Week 1</span><span class="pill pk">Day 15</span><span class="pill pk">Day 45</span></div>
+        <span class="jarr">→</span>
+      </div>
+
+      <div class="jcard jc-vn" onclick="showJourney('vietnam')">
+        <span class="jflag">🇻🇳</span>
+        <div class="jcountry" id="jc-vn-country">Vietnam</div>
+        <div class="jtype" id="jc-vn-type">Associates (PP ≥ 30)</div>
+        <div class="jdesc" id="jc-vn-desc">Survey at Day 15 with an accelerated HR check-in at Day 20. Manager probation reminder at Day 40.</div>
+        <div class="jpills"><span class="pill pv">Day 1</span><span class="pill pv">Week 1</span><span class="pill pv">Day 15</span><span class="pill pv">Day 20</span></div>
+        <span class="jarr">→</span>
+      </div>
+
+      <div class="jcard jc-cn" onclick="showJourney('china')">
+        <span class="jflag">🇨🇳</span>
+        <div class="jcountry" id="jc-cn-country">China</div>
+        <div class="jtype" id="jc-cn-type">All Associate Types</div>
+        <div class="jdesc" id="jc-cn-desc">Localised bilingual journey. Review documents and survey at Day 15. Manager check-in at Day 45.</div>
+        <div class="jpills"><span class="pill pc">Day 1</span><span class="pill pc">Week 1</span><span class="pill pc">Day 15</span><span class="pill pc">Day 45</span></div>
+        <span class="jarr">→</span>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer" id="footer-land">Thai Wah Public Company Limited · For questions, contact your HR Partner</div>
+</div>
+
+<!-- JOURNEY PAGE -->
+<div id="journey-page" class="screen">
+  <div class="jnav">
+    <button class="back-btn" id="back-btn" onclick="goBack()">← All journeys</button>
+    <span class="ndiv">|</span>
+    <span class="ntitle" id="nav-title"></span>
+  </div>
+  <div class="jhdr" id="jhdr"></div>
+  <div class="lanebar">
+    <div class="lanebar-in">
+      <div class="ltag assoc" id="lane-assoc">👤 Associate</div>
+      <div class="ltag mid" id="lane-mid">When</div>
+      <div class="ltag mgr" id="lane-mgr">Manager 👤</div>
+    </div>
+  </div>
+  <div class="jcontent" id="jcontent"></div>
+  <div class="footer" id="footer-journey">Thai Wah Public Company Limited · For questions, contact your HR Partner</div>
+</div>
+
+<script>
+// ── LANGUAGE STATE ──────────────────────────────────────────────
+let LANG = 'en';
+let CURRENT_JOURNEY = null;
+
+const T = {
+  en:{
+    lhTitle:'Welcome to Thai Wah —\nYour Onboarding Journey',
+    lhSub:'A step-by-step guide to your first 45 days. Select your profile below to view the journey that applies to you.',
+    lqText:'Which onboarding journey is this for?',
+    lsText:'Each associate type has a different timeline and set of tasks. Select the one that matches your role and location.',
+    footer:'Thai Wah Public Company Limited · For questions, contact your HR Partner',
+    backBtn:'← All journeys',
+    laneMid:'When',laneAssoc:'👤 Associate',laneMgr:'Manager 👤',
+    complete:'Probation confirmed — onboarding journey complete',
+    jcTmCountry:'Thailand',jcTmType:'Monthly Associate',jcTmDesc:'Full journey with probation objectives, review documents, and onboarding survey at Day 15.',
+    jcTdCountry:'Thailand',jcTdType:'Daily Associate',jcTdDesc:'Streamlined Day 1 onboarding. Profile setup and welcome message. No survey or review documents.',jcTdPill:'Profile setup only',
+    jcKhCountry:'Cambodia',jcKhType:'All Associate Types',jcKhDesc:'Localised journey with first week wrap-up, review documents, and survey at Day 15. HR check-in at Day 45.',
+    jcVnCountry:'Vietnam',jcVnType:'Associates (PP ≥ 30)',jcVnDesc:'Survey at Day 15 with an accelerated HR check-in at Day 20. Manager probation reminder at Day 40.',
+    jcCnCountry:'China',jcCnType:'All Associate Types',jcCnDesc:'Localised bilingual journey. Review documents and survey at Day 15. Manager check-in at Day 45.',
+    dotDay1:'Day\n1',dotWeek1:'Week\n1',dotDay15:'Day\n15',dotDay20:'Day\n20',dotDay45:'Day\n45',dotProb:'End of\nProbation',
+    mgrObjSearch:'start performance review for employee',
+    mgrObjStep1Title:'In the Workday search bar, type:',
+    mgrObjStep1Sub:'Select <strong>Start Performance Review for Employee</strong> from the results.',
+    mgrObjStep2Title:'Select the review template based on your associate\'s role',
+    mgrObjAssocLabel:'Associate Level',mgrObjAssocNote:'→ No direct reports',
+    mgrObjLeaderLabel:'Leader Level',mgrObjLeaderNote:'→ Has a team reporting to them',
+    mgrObjStep3Title:'Set the review period dates',
+    mgrObjStartDate:'Associate\'s joining date',mgrObjEndDate:'End of probation (or ~90 days)',
+    mgrObjDateHint:'<strong style="color:var(--amber);">Period End Date guide:</strong> Use the actual probation end date, or estimate ~90 days from hire date for a 119-day probation.',
+    mgrObjCtxNote:{
+      Thailand:'HR and the probation review will refer to these objectives — set them clearly.',
+      Cambodia:'HR checks in at Day 45. Ensure objectives are agreed before that meeting.',
+      Vietnam:'HR checks in at Day 20 for Vietnam associates — objectives must be set before then.',
+      China:'The reminder email at Day 45 is bilingual. Objectives must still be set in Week 1.'
+    }
+  },
+  th:{
+    lhTitle:'ยินดีต้อนรับสู่ไทยวา —\nเส้นทาง Onboarding ของคุณ',
+    lhSub:'คู่มือแบบ step-by-step สำหรับ 45 วันแรก เลือกประเภทพนักงานของคุณด้านล่างเพื่อดู Journey ที่เหมาะกับคุณ',
+    lqText:'Journey การ Onboarding นี้สำหรับใคร?',
+    lsText:'พนักงานแต่ละประเภทมี Timeline และงานที่แตกต่างกัน เลือกตามตำแหน่งและสถานที่ทำงานของคุณ',
+    footer:'บริษัท ไทยวา จำกัด (มหาชน) · หากมีคำถาม กรุณาติดต่อ HR Partner ของคุณ',
+    backBtn:'← Journey ทั้งหมด',
+    laneMid:'เมื่อไร',laneAssoc:'👤 พนักงาน',laneMgr:'ผู้จัดการ 👤',
+    complete:'ยืนยันผลทดลองงานแล้ว — เส้นทาง Onboarding เสร็จสมบูรณ์',
+    jcTmCountry:'ประเทศไทย',jcTmType:'พนักงานรายเดือน',jcTmDesc:'Journey เต็มรูปแบบ รวมถึงการกำหนดเป้าหมายช่วงทดลองงาน เอกสาร และแบบสอบถาม Onboarding ที่วันที่ 15',
+    jcTdCountry:'ประเทศไทย',jcTdType:'พนักงานรายวัน',jcTdDesc:'Onboarding แบบ Day 1 เท่านั้น ตั้งค่าโปรไฟล์และอ่าน Welcome Message ไม่มีแบบสอบถามหรือเอกสารให้รีวิว',jcTdPill:'ตั้งค่าโปรไฟล์เท่านั้น',
+    jcKhCountry:'กัมพูชา',jcKhType:'พนักงานทุกประเภท',jcKhDesc:'Journey เฉพาะพื้นที่ รวมถึงการสรุปสัปดาห์แรก เอกสาร และแบบสอบถามวันที่ 15 HR Check-in วันที่ 45',
+    jcVnCountry:'เวียดนาม',jcVnType:'พนักงาน (PP ≥ 30)',jcVnDesc:'แบบสอบถามวันที่ 15 พร้อม HR Check-in เร็วขึ้นที่วันที่ 20 Reminder สำหรับผู้จัดการวันที่ 40',
+    jcCnCountry:'จีน',jcCnType:'พนักงานทุกประเภท',jcCnDesc:'Journey ภาษาจีน-อังกฤษ รีวิวเอกสารและแบบสอบถามวันที่ 15 ผู้จัดการ Check-in วันที่ 45',
+    dotDay1:'วัน\nที่ 1',dotWeek1:'สัปดาห์\nที่ 1',dotDay15:'วัน\nที่ 15',dotDay20:'วัน\nที่ 20',dotDay45:'วัน\nที่ 45',dotProb:'สิ้นสุด\nทดลองงาน',
+    mgrObjSearch:'start performance review for employee',
+    mgrObjStep1Title:'พิมพ์ในช่องค้นหาของ Workday:',
+    mgrObjStep1Sub:'เลือก <strong>Start Performance Review for Employee</strong> จากผลการค้นหา',
+    mgrObjStep2Title:'เลือก Review Template ตามบทบาทของพนักงาน',
+    mgrObjAssocLabel:'Associate Level',mgrObjAssocNote:'→ ไม่มีผู้ใต้บังคับบัญชา',
+    mgrObjLeaderLabel:'Leader Level',mgrObjLeaderNote:'→ มีทีมรายงานตรง',
+    mgrObjStep3Title:'กำหนดวันเริ่มต้นและสิ้นสุดของการรีวิว',
+    mgrObjStartDate:'วันที่พนักงานเริ่มงาน',mgrObjEndDate:'วันสิ้นสุดทดลองงาน (หรือประมาณ 90 วัน)',
+    mgrObjDateHint:'<strong style="color:var(--amber);">แนวทาง Period End Date:</strong> ใช้วันสิ้นสุดทดลองงานจริง หรือประมาณ ~90 วันนับจากวันเริ่มงาน สำหรับช่วงทดลองงาน 119 วัน',
+    mgrObjCtxNote:{
+      Thailand:'เป้าหมายและพฤติกรรมที่คุณกำหนดไว้จะเป็นพื้นฐานในการตัดสินใจช่วงทดลองงาน — ผ่าน ต่อเวลา หรือไม่ผ่าน กำหนดให้ชัดเจนตั้งแต่ต้น',
+      Cambodia:'HR จะ Check-in วันที่ 45 ตรวจสอบให้แน่ใจว่าตกลงเป้าหมายก่อนการประชุมนั้น',
+      Vietnam:'HR ของเวียดนาม Check-in วันที่ 20 — ต้องกำหนดและแชร์เป้าหมายกับพนักงานก่อนวันนั้น',
+      China:'การแจ้งเตือนทั้งหมดเป็นภาษาสองภาษา แต่ต้องกำหนดเป้าหมายและพฤติกรรมใน Week 1'
+    },
+    mgrEvalHead:'ประเมินการทดลองงาน — ผ่านหรือพัฒนา',
+    mgrEvalWhen:'Workday แจ้งเตือนคุณเมื่อถึงกำหนดการประเมิน',
+    mgrEvalBody:'Workday จะแจ้งเตือนให้คุณดำเนินการประเมินช่วงทดลองงาน นี่คือขั้นตอนที่คุณประเมินผลงานของพนักงานอย่างเป็นทางการ เทียบกับเป้าหมายและพฤติกรรมที่กำหนดไว้ตั้งแต่วันที่ 1 และทำการแนะนำผลสรุป',
+    mgrEvalSteps:['เปิดงานรีวิวช่วงทดลองงานใน Workday','ให้คะแนนการบรรลุเป้าหมายแต่ละข้อของพนักงาน','ประเมินพฤติกรรมที่แสดงออกมา','เขียน Feedback ที่ชัดเจนและสร้างสรรค์เพื่อพัฒนาพนักงาน','ทำการแนะนำ: ผ่าน / ต่อเวลา / ไม่ผ่าน','Submit — HR จะได้รับแจ้งและดำเนินขั้นตอนถัดไป'],
+    mgrEvalTip:'การประเมินของคุณกำหนดผลช่วงทดลองงานโดยตรง ให้ข้อมูลที่เฉพาะเจาะจงและมีหลักฐานสนับสนุน หากมีจุดที่ต้องพัฒนา ให้ Feedback ที่นำไปปฏิบัติได้จริง',
+    mgrObjSetupHead:'ตั้งค่าเนื้อหาการรีวิวช่วงทดลองงาน',
+    mgrObjSetupWhen:'ปรากฏใน Workday inbox เมื่อพนักงานใหม่ของคุณเริ่มงาน',
+    mgrObjSetupBody:'ในฐานะ Line Manager ความรับผิดชอบแรกของคุณคือการตั้งค่าการรีวิวช่วงทดลองงานใน Workday ซึ่งจะสร้างกรอบการทำงาน — เป้าหมายและพฤติกรรมที่คาดหวัง — ที่คุณจะใช้ประเมินพนักงานเมื่อสิ้นสุดช่วงทดลองงาน ใช้เวลาไม่เกิน 5 นาที และต้องทำใน Week 1',
+    mgrObjSetupTip:'เป้าหมายและพฤติกรรมที่คุณกำหนดที่นี่เป็นพื้นฐานในการตัดสินใจช่วงทดลองงาน — ผ่าน ต่อเวลา หรือไม่ผ่าน กำหนดให้ชัดเจนเพื่อให้พนักงานรู้ว่าความสำเร็จหมายถึงอะไรตั้งแต่วันแรก'
+  }
+};
+
+// ── JOURNEY DATA ─────────────────────────────────────────────────
+const JD = {
+en:{
+  'th-monthly':{
+    flag:'🇹🇭',sub:'Thailand · Monthly',color:'teal',
+    title:'Monthly Associate Onboarding Journey',
+    desc:'This is the full onboarding journey for monthly associates in Thailand. Tasks span from Day 1 through to Day 45, including probation objectives, review documents, and an onboarding survey.',
+    milestones:[
+      {dot:'dd1',lbl:'Day\n1',
+       assoc:[{id:'tm-w',l:'To Do',t:'Welcome message',s:'Read your onboarding To Do'},
+              {id:'tm-p',l:'Task',t:'Update your profile',s:'Contact info, photo, emergency contacts'}],
+       mgr:[{id:'tm-mo',l:'Line Manager · To Do',t:'Set up probation review content',s:'Define objectives & behaviours in Workday'}]},
+      {dot:'dw1',lbl:'Week\n1',
+       assoc:[{id:'tm-wk',l:'To Do',t:'Wrapping up your first week',s:'Reflect on your first week experience'},
+              {id:'tm-d1',l:'Review Documents',t:'Review onboarding documents',s:'3 documents to read and acknowledge'}],
+       mgr:[]},
+      {dot:'dd15',lbl:'Day\n15',
+       assoc:[{id:'tm-sv',l:'Survey + Documents',t:'Onboarding survey & documents',s:'2 documents + complete questionnaire'}],
+       mgr:[]},
+      {dot:'dd45',lbl:'Day\n45',
+       assoc:[{id:'tm-rm',l:'Email Reminder',t:'Survey reminder',s:'If survey is still incomplete at Day 30'}],
+       mgr:[{id:'tm-mc',l:'Line Manager · Workday Notification',t:'Evaluate probation — pass or develop',s:'Rate objectives, behaviours & give feedback'},
+            {id:'tm-hr',l:'HR Action',t:'HR checks in with associate',s:'After survey is completed'}]},
+      {dot:'ddprob',lbl:'End of\nProbation',
+       assoc:[{id:'tm-assoc-prob',l:'Associate · Outcome',t:'Receive probation result & feedback',s:'Manager shares decision and development feedback'}],
+       mgr:[{id:'tm-mgr-prob',l:'Line Manager · Action',t:'Confirm probation decision',s:'Submit pass / extend / not pass in Workday'}]}
+    ],
+    det:{
+      'tm-w':{who:'assoc',tag:'Associate · To Do · Day 1',head:'Welcome to Thai Wah!',when:'Appears in your Workday inbox on your first day',body:'Your very first task is to read this welcome message. It sets the tone for your onboarding journey and tells you everything you need to know about your first week.',steps:['Open the To Do in your Workday inbox','Read the welcome message carefully','Check your IT equipment — contact helpdesk@taiwah.com if anything is missing','Note what is coming up this week','Mark the To Do as complete when done'],tip:{type:'tip',lbl:'Tip',txt:"This should only take 5–10 minutes. Don't skip it — it has important contact details you'll need."}},
+      'tm-p':{who:'assoc',tag:'Associate · Task · Day 1',head:'Update your Workday profile',when:'Runs in parallel with the welcome message on Day 1',body:'This task makes sure your personal information in Workday is complete and accurate. HR and your manager rely on this data.',steps:['Go to your Workday profile','Update personal details — full name, phone, home address','Add at least one emergency contact','Upload a clear profile photo','Submit — your HR team will be notified automatically'],tip:{type:'tip',lbl:'Tip',txt:'A complete profile helps colleagues find and recognise you. Take 15 minutes to do this properly.'}},
+      'tm-mo':{who:'mgr',tag:'Line Manager · To Do · Day 1',head:'Set up probation review content',when:'Appears in your Workday inbox when your new associate starts',body:'As the line manager, your first responsibility is to set up the probation review in Workday. This creates the framework — objectives and expected behaviours — that you will use to evaluate your associate at the end of their probation. It takes less than 5 minutes and must be done in Week 1.',isMgrObj:true,ctx:'Thailand',tip:{type:'note',lbl:'Why this matters',txt:'The objectives and behaviours you set here are the basis for the probation decision — pass, extend, or not pass. Set them clearly so your associate knows exactly what success looks like from Day 1.'}},
+      'tm-wk':{who:'assoc',tag:'Associate · To Do · End of Week 1',head:'Wrapping up your first week',when:'Appears 1 week after your hire date',body:'At the end of your first week, reflect on your experience so far. A short task to help you pause and take stock.',steps:['Open the To Do from your Workday inbox','Think about what went well and what you still need help with','If you have concerns — reach out to your HR partner or manager','Mark as complete'],tip:{type:'tip',lbl:'Tip',txt:"Don't hesitate to flag concerns early. Your feedback helps HR improve the onboarding experience."}},
+      'tm-d1':{who:'assoc',tag:'Associate · Review Documents · Week 1',head:'Review onboarding documents',when:'Delivered 1 week after your hire date',body:"You'll be asked to read and acknowledge 3 important company documents covering essential policies every Thai Wah associate needs to know.",steps:['Open the Review Documents task in Workday','Read each document carefully — all 3 are required','Click Acknowledge on each document after reading','If you have questions, ask your HR partner'],tip:{type:'note',lbl:'Note',txt:'Acknowledging these documents is a formal record. Make sure you actually read them before clicking.'}},
+      'tm-sv':{who:'assoc',tag:'Associate · Survey + Documents · Day 15',head:'Onboarding survey & documents',when:'Delivered 15 days after your hire date',body:'At Day 15 complete a second round of documents and an onboarding survey. HR uses your feedback to check in with you and your manager.',steps:['Open the Review Documents task — read and acknowledge 2 documents','Open the Complete Questionnaire task','Answer all questions honestly — your feedback is confidential','Submit the survey'],tip:{type:'note',lbl:'Important',txt:'Once you complete this survey, HR will receive a notification and may reach out to check in with you.'}},
+      'tm-rm':{who:'assoc',tag:'Associate · Email · Day 30',head:'Survey reminder email',when:'Sent automatically at Day 30 if survey is still incomplete',body:"If you haven't completed your onboarding survey yet, you'll receive an automatic email reminder.",steps:['Check your email for a reminder from HR','Log in to Workday and complete the questionnaire','Submit before Day 45 so HR can check in on time'],tip:{type:'tip',lbl:'Avoid the reminder',txt:"Complete your survey at Day 15 and you won't receive this email at all!"}},
+      'tm-mc':{who:'mgr',tag:'Line Manager · Workday Notification · Day 45',head:'Evaluate probation — pass or develop',when:'Workday notification sent at Day 45 of your associate\'s onboarding',body:'At Day 45, Workday will notify you to complete the probation evaluation. This is where you formally assess your associate\'s performance against the objectives and behaviours you set on Day 1 — and make your recommendation.',steps:['Open the probation review task in Workday','Rate your associate\'s achievement against each objective','Assess their demonstrated behaviours','Write clear, constructive feedback for their development','Make your recommendation: Pass / Extend / Not Pass','Submit — HR will be notified and next steps will follow'],tip:{type:'note',lbl:'This decision matters',txt:'Your evaluation directly determines the probation outcome. Be specific and evidence-based. Where performance needs improvement, provide actionable feedback to support their development going forward.'}},
+      'tm-hr':{who:'mgr',tag:'HR Partner · Action · After Day 15 Survey',head:'HR checks in with the associate',when:'Triggered once the associate submits their onboarding survey',body:'HR will receive a Workday notification and will reach out to check in. This is a standard part of the process.',steps:['HR Partner receives automatic Workday notification','HR reviews the survey responses','HR checks in with the associate to discuss progress','HR may reach out to you as the manager if follow-up is needed'],tip:{type:'tip',lbl:'As a manager',txt:"Make sure your new associate feels safe to answer the survey honestly."}},
+      'tm-assoc-prob':{who:'assoc',tag:'Associate · End of Probation',head:'Receive your probation result & feedback',when:'At the end of your probation period',body:'Your line manager will complete the formal probation evaluation in Workday and share the outcome with you. This is an important milestone — a structured conversation about your performance, growth, and next steps.',steps:['Your manager will schedule a probation review meeting with you','They will share their evaluation of your objectives and behaviours','Listen actively and ask questions — this is a two-way conversation','You will receive a clear decision: Pass, Extend, or further discussion','If passed — congratulations, your onboarding journey is complete!','If extended — agree on specific improvement areas and a new timeline'],tip:{type:'tip',lbl:'For you',txt:'Come prepared. Reflect on your own progress against the objectives set on Day 1 so you can have a meaningful conversation with your manager.'}},
+      'tm-mgr-prob':{who:'mgr',tag:'Line Manager · End of Probation',head:'Confirm the probation decision',when:'At the end of the associate\'s probation period',body:'This is where the onboarding journey formally closes. You have evaluated the associate\'s objectives and behaviours — now confirm the outcome in Workday and deliver the feedback directly in a face-to-face conversation.',steps:['Complete the probation review evaluation in Workday if not already done','Select your decision: Pass / Extend / Not Pass','Schedule a face-to-face probation review meeting with the associate','Share your evaluation clearly — cover objectives, behaviours, and overall performance','Provide specific development feedback regardless of the outcome','Submit the decision in Workday — HR will be notified and next steps will follow automatically'],tip:{type:'note',lbl:'This is the moment',txt:'A clear, honest, and respectful conversation at this stage sets the tone for the associate\'s career at Thai Wah. If passing — celebrate and set the stage for their next chapter. If extending or not passing — be specific, fair, and focused on development.'}}
+    }
+  },
+  'th-daily':{
+    flag:'🇹🇭',sub:'Thailand · Daily',color:'amber',
+    title:'Daily Associate Onboarding Journey',
+    desc:'Daily associates in Thailand receive a streamlined onboarding. Tasks focus on the Day 1 welcome and profile setup. There is no review documents or survey step for this associate type.',
+    milestones:[
+      {dot:'dd1',lbl:'Day\n1',
+       assoc:[{id:'td-w',l:'To Do',t:'Welcome message',s:'Read your onboarding To Do'},
+              {id:'td-p',l:'Task',t:'Update your profile',s:'Contact info, photo, emergency contacts'}],
+       mgr:[]}
+    ],
+    det:{
+      'td-w':{who:'assoc',tag:'Associate · To Do · Day 1',head:'Welcome to Thai Wah!',when:'Appears in your Workday inbox on your first day',body:"Your first task is to read the welcome message. It introduces you to Thai Wah's Stronger, Faster, Better journey.",steps:['Open the To Do in your Workday inbox','Read the welcome message carefully','Check your IT equipment — contact helpdesk@taiwah.com if anything is missing','Mark the To Do as complete when done'],tip:{type:'tip',lbl:'Tip',txt:'As a daily associate, your onboarding focuses on getting you set up quickly on Day 1.'}},
+      'td-p':{who:'assoc',tag:'Associate · Task · Day 1',head:'Update your Workday profile',when:'Runs in parallel with the welcome message on Day 1',body:'Make sure your personal information in Workday is complete so HR and your team can reach you.',steps:['Go to your Workday profile','Update personal details — full name, phone, address','Add at least one emergency contact','Upload a clear profile photo','Submit your updates'],tip:{type:'note',lbl:'Note',txt:'This is the main Workday task for daily associates on Day 1. Take 10–15 minutes to do it properly.'}}
+    }
+  },
+  'cambodia':{
+    flag:'🇰🇭',sub:'Cambodia',color:'coral',
+    title:'Cambodia Associate Onboarding Journey',
+    desc:'Associates in Cambodia follow a localised onboarding journey. Tasks include a welcome message, first week wrap-up, review documents, survey at Day 15, and an HR check-in at Day 45.',
+    milestones:[
+      {dot:'dd1',lbl:'Day\n1',
+       assoc:[{id:'kh-w',l:'To Do',t:'Welcome message',s:'Localised welcome for Cambodia'},
+              {id:'kh-p',l:'Task',t:'Update your profile',s:'Contact info, photo, emergency contacts'}],
+       mgr:[{id:'kh-mo',l:'Line Manager · To Do',t:'Set up probation review content',s:'Define objectives & behaviours in Workday'}]},
+      {dot:'dw1',lbl:'Week\n1',
+       assoc:[{id:'kh-wk',l:'To Do',t:'Wrapping up your first week',s:'Cambodia version'},
+              {id:'kh-d1',l:'Review Documents',t:'Review onboarding documents',s:'3 documents to acknowledge'}],
+       mgr:[]},
+      {dot:'dd15',lbl:'Day\n15',
+       assoc:[{id:'kh-sv',l:'Survey + Documents',t:'Onboarding survey & documents',s:'2 documents + questionnaire'}],
+       mgr:[]},
+      {dot:'dd45',lbl:'Day\n45',
+       assoc:[],
+       mgr:[{id:'kh-mc',l:'Line Manager · Workday Notification',t:'Evaluate probation — pass or develop',s:'Rate objectives, behaviours & give feedback'},
+            {id:'kh-hr',l:'HR Action',t:'HR checks in with associate',s:'After survey is completed'}]},
+      {dot:'ddprob',lbl:'End of\nProbation',
+       assoc:[{id:'kh-assoc-prob',l:'Associate · Outcome',t:'Receive probation result & feedback',s:'Manager shares decision and development feedback'}],
+       mgr:[{id:'kh-mgr-prob',l:'Line Manager · Action',t:'Confirm probation decision',s:'Submit pass / extend / not pass in Workday'}]}
+    ],
+    det:{
+      'kh-w':{who:'assoc',tag:'Associate · To Do · Day 1',head:'Welcome to Thai Wah (Cambodia)',when:'Appears in your Workday inbox on your first day',body:'Your welcome message is localised for Cambodia and includes Khmer language content.',steps:['Open the To Do in your Workday inbox','Read the welcome message','Check your IT equipment','Contact helpdesk@taiwah.com if anything is missing','Mark the To Do as complete'],tip:{type:'tip',lbl:'Tip',txt:'Your Cambodia HR Partner is your main point of contact for any onboarding questions.'}},
+      'kh-p':{who:'assoc',tag:'Associate · Task · Day 1',head:'Update your Workday profile',when:'Day 1 — runs in parallel with the welcome message',body:'Update your personal details so your HR partner and manager can reach you.',steps:['Go to your Workday profile','Update personal details — name, phone, address','Add an emergency contact','Upload a clear profile photo','Submit'],tip:{type:'note',lbl:'Note',txt:'Make sure your phone number is correct so your Cambodia HR Partner can reach you.'}},
+      'kh-mo':{who:'mgr',tag:'Line Manager · To Do · Day 1',head:'Set up probation review content',when:'Appears when your new Cambodia associate starts',body:'As the line manager, your first responsibility is to set up the probation review in Workday. This creates the framework — objectives and expected behaviours — that you will use to evaluate your associate at the end of their probation. Complete it in Week 1.',isMgrObj:true,ctx:'Cambodia',tip:{type:'note',lbl:'Why this matters',txt:'The objectives and behaviours you set here are the basis for the probation decision — pass, extend, or not pass. Set them clearly so your associate knows what success looks like from Day 1.'}},
+      'kh-wk':{who:'assoc',tag:'Associate · To Do · End of Week 1',head:'Wrapping up your first week (Cambodia)',when:'1 week after your hire date',body:'Reflect on your first week. This To Do is localised for Cambodia.',steps:['Open the To Do in Workday','Reflect on your first week experience','Flag any concerns to your HR partner or manager','Mark as complete'],tip:{type:'tip',lbl:'Tip',txt:"Your Cambodia HR Partner is available to support you."}},
+      'kh-d1':{who:'assoc',tag:'Associate · Review Documents · Week 1',head:'Review onboarding documents',when:'1 week after your hire date',body:'Read and acknowledge 3 documents covering policies relevant to Cambodia-based associates.',steps:['Open Review Documents in Workday','Read each of the 3 documents','Click Acknowledge on each','Ask your HR partner if you have questions'],tip:{type:'note',lbl:'Note',txt:'Some documents may be in both English and Khmer. Read carefully before acknowledging.'}},
+      'kh-sv':{who:'assoc',tag:'Associate · Survey + Documents · Day 15',head:'Onboarding survey & documents',when:'15 days after your hire date',body:'Complete 2 documents and the onboarding questionnaire. Your Cambodia HR Partner will be notified after you submit.',steps:['Open Review Documents — acknowledge 2 documents','Open Complete Questionnaire','Answer honestly','Submit'],tip:{type:'note',lbl:'Important',txt:'After you submit, your Cambodia HR Partner will check in with you at Day 45.'}},
+      'kh-mc':{who:'mgr',tag:'Line Manager · Workday Notification · Day 45',head:'Evaluate probation — pass or develop',when:'Workday notification sent at Day 45',body:"At Day 45, Workday will notify you to complete the probation evaluation. Formally assess your associate's performance against the objectives and behaviours you set on Day 1 and make your recommendation.",steps:['Open the probation review task in Workday','Rate your associate\'s achievement against each objective','Assess their demonstrated behaviours','Write clear, constructive feedback for their development','Make your recommendation: Pass / Extend / Not Pass','Submit — HR will be notified and next steps will follow'],tip:{type:'note',lbl:'This decision matters',txt:'Your evaluation directly determines the probation outcome. Be specific and evidence-based. Where performance needs improvement, provide actionable feedback to support their development.'}},
+      'kh-hr':{who:'mgr',tag:'HR Partner · Action · After Day 15 Survey',head:'HR checks in with the associate',when:'Triggered after the associate submits their onboarding survey',body:'The Cambodia HR Partner will receive a Workday notification and check in with the associate.',steps:['HR Partner receives Workday notification','Reviews survey responses','Checks in with the associate','Follows up with manager if needed'],tip:{type:'tip',lbl:'As a manager',txt:"Encourage your new associate to complete the survey at Day 15."}},
+      'kh-assoc-prob':{who:'assoc',tag:'Associate · End of Probation',head:'Receive your probation result & feedback',when:'At the end of your probation period',body:'Your line manager will complete the formal probation evaluation in Workday and share the outcome with you in a structured review conversation.',steps:['Your manager will schedule a probation review meeting','They will share their evaluation of your objectives and behaviours','Listen actively and ask questions — this is a two-way conversation','Receive a clear decision: Pass, Extend, or further discussion','If passed — congratulations, your onboarding journey is complete!','If extended — agree on specific improvements and a new timeline'],tip:{type:'tip',lbl:'For you',txt:'Reflect on your progress against the objectives set on Day 1 so you can have a meaningful conversation with your manager.'}},
+      'kh-mgr-prob':{who:'mgr',tag:'Line Manager · End of Probation',head:'Confirm the probation decision',when:"At the end of the associate's probation period",body:'Confirm the outcome in Workday and deliver feedback directly in a face-to-face conversation.',steps:['Complete the probation review evaluation in Workday','Select your decision: Pass / Extend / Not Pass','Schedule a face-to-face probation review meeting','Share your evaluation — objectives, behaviours, and overall performance','Provide specific development feedback regardless of the outcome','Submit in Workday — HR will be notified and next steps follow automatically'],tip:{type:'note',lbl:'This is the moment',txt:"Be clear, honest, and respectful. Whether passing or extending, your feedback sets the tone for the associate's career at Thai Wah."}}
+    }
+  },
+  'vietnam':{
+    flag:'🇻🇳',sub:'Vietnam · PP ≥ 30',color:'blue',
+    title:'Vietnam Associate Onboarding Journey',
+    desc:'Vietnam associates with a pay period of 30 or more days follow this accelerated journey. HR checks in at Day 20, and the manager reminder is sent at Day 40.',
+    milestones:[
+      {dot:'dd1',lbl:'Day\n1',
+       assoc:[{id:'vn-w',l:'To Do',t:'Welcome message',s:'Localised welcome for Vietnam'},
+              {id:'vn-p',l:'Task',t:'Update your profile',s:'Contact info, photo, emergency contacts'}],
+       mgr:[{id:'vn-mo',l:'Line Manager · To Do',t:'Set up probation review content',s:'Define objectives & behaviours in Workday'}]},
+      {dot:'dw1',lbl:'Week\n1',
+       assoc:[{id:'vn-wk',l:'To Do',t:'Wrapping up your first week',s:'Vietnam version (60-day probation)'},
+              {id:'vn-d1',l:'Review Documents',t:'Review onboarding documents',s:'3 documents to acknowledge'}],
+       mgr:[]},
+      {dot:'dd15',lbl:'Day\n15',
+       assoc:[{id:'vn-sv',l:'Survey + Documents',t:'Onboarding survey & documents',s:'2 documents + questionnaire'}],
+       mgr:[]},
+      {dot:'dd20',lbl:'Day\n20',
+       assoc:[],
+       mgr:[{id:'vn-hr',l:'HR Action',t:'HR checks in — Day 20',s:'Earlier check-in specific to Vietnam'},
+            {id:'vn-mc',l:'Line Manager · Workday Notification',t:'Evaluate probation — pass or develop',s:'Rate objectives, behaviours & give feedback'}]},
+      {dot:'ddprob',lbl:'End of\nProbation',
+       assoc:[{id:'vn-assoc-prob',l:'Associate · Outcome',t:'Receive probation result & feedback',s:'Manager shares decision and development feedback'}],
+       mgr:[{id:'vn-mgr-prob',l:'Line Manager · Action',t:'Confirm probation decision',s:'Submit pass / extend / not pass in Workday'}]}
+    ],
+    det:{
+      'vn-w':{who:'assoc',tag:'Associate · To Do · Day 1',head:'Welcome to Thai Wah (Vietnam)',when:'Appears in your Workday inbox on your first day',body:'Your welcome message is localised for Vietnam and includes Vietnamese language content.',steps:['Open the To Do in your Workday inbox','Read the welcome message','Check IT equipment','Contact helpdesk@taiwah.com if anything is missing','Mark the To Do as complete'],tip:{type:'tip',lbl:'Tip',txt:'Your Vietnam HR Partner is your main onboarding contact.'}},
+      'vn-p':{who:'assoc',tag:'Associate · Task · Day 1',head:'Update your Workday profile',when:'Day 1 — runs in parallel with the welcome message',body:'Update your personal details so your HR partner and manager can reach you.',steps:['Go to your Workday profile','Update personal details — name, phone, address','Add an emergency contact','Upload a clear profile photo','Submit'],tip:{type:'note',lbl:'Note',txt:'Ensure your contact details are up to date as your HR Partner will reach out at Day 20.'}},
+      'vn-mo':{who:'mgr',tag:'Line Manager · To Do · Day 1',head:'Set up probation review content',when:'Appears when your new Vietnam associate starts',body:'As the line manager, your first responsibility is to set up the probation review in Workday. This creates the framework — objectives and expected behaviours — that you will use to evaluate your associate at the end of their probation. Complete it in Week 1.',isMgrObj:true,ctx:'Vietnam',tip:{type:'note',lbl:'Vietnam — act fast',txt:'HR checks in with your associate at Day 20. Objectives must be set and shared with the associate before that date.'}},
+      'vn-wk':{who:'assoc',tag:'Associate · To Do · End of Week 1',head:'Wrapping up your first week (Vietnam)',when:'1 week after hire date — 60-day probation track',body:'Reflect on your first week. This To Do is localised for Vietnam.',steps:['Open the To Do in Workday','Reflect on your first week','Flag any concerns to HR or manager','Mark as complete'],tip:{type:'tip',lbl:'Note',txt:'This To Do is only sent to Vietnam associates on a 60-day probation track.'}},
+      'vn-d1':{who:'assoc',tag:'Associate · Review Documents · Week 1',head:'Review onboarding documents',when:'1 week after your hire date',body:'Read and acknowledge 3 documents covering policies for Vietnam-based associates.',steps:['Open Review Documents in Workday','Read each of the 3 documents','Click Acknowledge on each','Ask your HR Partner if you have questions'],tip:{type:'note',lbl:'Note',txt:'Documents may include Vietnamese language versions. Read carefully.'}},
+      'vn-sv':{who:'assoc',tag:'Associate · Survey + Documents · Day 15',head:'Onboarding survey & documents',when:'15 days after your hire date',body:'Complete 2 documents and the onboarding questionnaire. Your Vietnam HR Partner checks in at Day 20 after you submit.',steps:['Open Review Documents — acknowledge 2 documents','Open Complete Questionnaire','Answer honestly','Submit'],tip:{type:'note',lbl:'Important',txt:'Submit by Day 15 so your HR Partner can prepare for the Day 20 check-in.'}},
+      'vn-hr':{who:'mgr',tag:'HR Partner · Action · Day 20',head:'HR checks in — Day 20 (Vietnam)',when:'Triggered after survey submission — check-in at Day 20',body:'Vietnam associates have an accelerated HR check-in at Day 20, compared to Day 45 in other countries.',steps:['HR Partner receives Workday notification','Reviews survey responses','Checks in with the associate at Day 20','Follows up with manager if needed'],tip:{type:'note',lbl:'Vietnam only',txt:'This 20-day check-in is specific to Vietnam associates with PP ≥ 30.'}},
+      'vn-mc':{who:'mgr',tag:'Line Manager · Workday Notification · Day 40',head:'Evaluate probation — pass or develop',when:'Workday notification sent at Day 40 — earlier than other countries',body:"At Day 40, Workday will notify you to complete the probation evaluation for your Vietnam associate. Formally assess performance against the objectives and behaviours set on Day 1 and make your recommendation.",steps:['Open the probation review task in Workday','Rate your associate\'s achievement against each objective','Assess their demonstrated behaviours','Write clear, constructive feedback for their development','Make your recommendation: Pass / Extend / Not Pass','Submit — HR will be notified and next steps will follow'],tip:{type:'note',lbl:'Vietnam timeline',txt:'The evaluation notification arrives at Day 40 for Vietnam — 5 days earlier than other locations. Plan your review conversation with your associate ahead of time.'}},
+      'vn-assoc-prob':{who:'assoc',tag:'Associate · End of Probation',head:'Receive your probation result & feedback',when:'At the end of your probation period',body:'Your line manager will complete the formal probation evaluation in Workday and share the outcome with you in a structured review conversation.',steps:['Your manager will schedule a probation review meeting','They will share their evaluation of your objectives and behaviours','Listen actively and ask questions — this is a two-way conversation','Receive a clear decision: Pass, Extend, or further discussion','If passed — congratulations, your onboarding journey is complete!','If extended — agree on specific improvements and a new timeline'],tip:{type:'tip',lbl:'For you',txt:'Reflect on your progress against the objectives set on Day 1 so you can have a meaningful conversation with your manager.'}},
+      'vn-mgr-prob':{who:'mgr',tag:'Line Manager · End of Probation',head:'Confirm the probation decision',when:"At the end of the associate's probation period",body:'Confirm the outcome in Workday and deliver feedback in a direct, face-to-face probation review conversation.',steps:['Complete the probation review evaluation in Workday','Select your decision: Pass / Extend / Not Pass','Schedule a face-to-face probation review meeting','Share your evaluation — objectives, behaviours, and overall performance','Provide specific development feedback regardless of the outcome','Submit in Workday — HR will be notified and next steps follow automatically'],tip:{type:'note',lbl:'This is the moment',txt:"Be clear, honest, and respectful. Whether passing or extending, your feedback sets the tone for the associate's career at Thai Wah."}}
+    }
+  },
+  'china':{
+    flag:'🇨🇳',sub:'China',color:'purple',
+    title:'China Associate Onboarding Journey',
+    desc:'Associates in China follow a localised bilingual (Chinese/English) onboarding journey. All manager notifications include Chinese language content.',
+    milestones:[
+      {dot:'dd1',lbl:'Day\n1',
+       assoc:[{id:'cn-w',l:'To Do',t:'Welcome message',s:'Localised welcome for China'},
+              {id:'cn-p',l:'Task',t:'Update your profile',s:'Contact info, photo, emergency contacts'}],
+       mgr:[{id:'cn-mo',l:'Line Manager · To Do',t:'Set up probation review content',s:'Define objectives & behaviours in Workday'}]},
+      {dot:'dw1',lbl:'Week\n1',
+       assoc:[{id:'cn-wk',l:'To Do',t:'Wrapping up your first week',s:'China version'},
+              {id:'cn-d1',l:'Review Documents',t:'Review onboarding documents',s:'3 documents to acknowledge'}],
+       mgr:[]},
+      {dot:'dd15',lbl:'Day\n15',
+       assoc:[{id:'cn-sv',l:'Survey + Documents',t:'Onboarding survey & documents',s:'2 documents + questionnaire'}],
+       mgr:[]},
+      {dot:'dd45',lbl:'Day\n45',
+       assoc:[],
+       mgr:[{id:'cn-mc',l:'Line Manager · Workday Notification',t:'Evaluate probation — pass or develop',s:'Rate objectives, behaviours & give feedback'},
+            {id:'cn-hr',l:'HR Action',t:'HR checks in with associate',s:'After survey — 45-day check-in'}]},
+      {dot:'ddprob',lbl:'End of\nProbation',
+       assoc:[{id:'cn-assoc-prob',l:'Associate · Outcome',t:'Receive probation result & feedback',s:'Manager shares decision and development feedback'}],
+       mgr:[{id:'cn-mgr-prob',l:'Line Manager · Action',t:'Confirm probation decision',s:'Submit pass / extend / not pass in Workday'}]}
+    ],
+    det:{
+      'cn-w':{who:'assoc',tag:'Associate · To Do · Day 1',head:'Welcome to Thai Wah (China)',when:'Appears in your Workday inbox on your first day',body:'Your welcome message is localised for China and includes Chinese language content.',steps:['Open the To Do in your Workday inbox','Read the welcome message','Check IT equipment','Contact helpdesk@taiwah.com if anything is missing','Mark the To Do as complete'],tip:{type:'tip',lbl:'Tip',txt:'Your China HR Partner is your main onboarding contact.'}},
+      'cn-p':{who:'assoc',tag:'Associate · Task · Day 1',head:'Update your Workday profile',when:'Day 1 — runs in parallel with the welcome message',body:'Update your personal information in Workday so your HR partner and manager can reach you.',steps:['Go to your Workday profile','Update personal details — name, phone, address','Add an emergency contact','Upload a clear profile photo','Submit'],tip:{type:'note',lbl:'Note',txt:'Ensure your contact details are correct as HR will reach out after your Day 15 survey.'}},
+      'cn-mo':{who:'mgr',tag:'Line Manager · To Do · Day 1',head:'Set up probation review content',when:'Appears when your new China associate starts',body:'As the line manager, your first responsibility is to set up the probation review in Workday. This creates the framework — objectives and expected behaviours — that you will use to evaluate your associate at the end of their probation. All system notifications for this journey include bilingual Chinese/English content.',isMgrObj:true,ctx:'China',tip:{type:'note',lbl:'Why this matters',txt:'The objectives and behaviours you set here are the basis for the probation decision — pass, extend, or not pass. Set them clearly so your associate knows what success looks like from Day 1.'}},
+      'cn-wk':{who:'assoc',tag:'Associate · To Do · End of Week 1',head:'Wrapping up your first week (China)',when:'1 week after your hire date',body:'Reflect on your first week. This To Do is localised for China.',steps:['Open the To Do in Workday','Reflect on your first week','Flag any concerns to HR or manager','Mark as complete'],tip:{type:'tip',lbl:'Tip',txt:"Your China HR Partner is available to support you."}},
+      'cn-d1':{who:'assoc',tag:'Associate · Review Documents · Week 1',head:'Review onboarding documents',when:'1 week after your hire date',body:'Read and acknowledge 3 documents. May include bilingual Chinese/English versions.',steps:['Open Review Documents in Workday','Read each of the 3 documents','Click Acknowledge on each','Ask your HR Partner if you have questions'],tip:{type:'note',lbl:'Note',txt:'Documents may include bilingual versions. Read in your preferred language before acknowledging.'}},
+      'cn-sv':{who:'assoc',tag:'Associate · Survey + Documents · Day 15',head:'Onboarding survey & documents',when:'15 days after your hire date',body:'Complete 2 documents and the onboarding questionnaire. Your China HR Partner will check in at Day 45.',steps:['Open Review Documents — acknowledge 2 documents','Open Complete Questionnaire','Answer honestly','Submit'],tip:{type:'note',lbl:'Important',txt:'Submit by Day 15 so HR can check in with you on schedule at Day 45.'}},
+      'cn-mc':{who:'mgr',tag:'Line Manager · Workday Notification · Day 45',head:'Evaluate probation — pass or develop',when:'Bilingual Workday notification sent at Day 45',body:"At Day 45, Workday will notify you to complete the probation evaluation for your China associate. The notification is bilingual (Chinese/English). Formally assess performance against the objectives and behaviours set on Day 1 and make your recommendation.",steps:['Open the probation review task in Workday','Rate your associate\'s achievement against each objective','Assess their demonstrated behaviours','Write clear, constructive feedback for their development','Make your recommendation: Pass / Extend / Not Pass','Submit — HR will be notified and next steps will follow'],tip:{type:'note',lbl:'This decision matters',txt:'Your evaluation directly determines the probation outcome. Be specific and evidence-based. Where improvement is needed, provide actionable feedback to support their development.'}},
+      'cn-hr':{who:'mgr',tag:'HR Partner · Action · After Day 15 Survey',head:'HR checks in with the associate',when:'Triggered after the associate submits their onboarding survey',body:'The China HR Partner will receive a Workday notification and check in with the associate.',steps:['HR Partner receives Workday notification','Reviews survey responses','Checks in with the associate','Follows up with manager if needed'],tip:{type:'tip',lbl:'As a manager',txt:"Encourage your new associate to complete the survey at Day 15."}},
+      'cn-assoc-prob':{who:'assoc',tag:'Associate · End of Probation',head:'Receive your probation result & feedback',when:'At the end of your probation period',body:'Your line manager will complete the formal probation evaluation in Workday and share the outcome with you in a structured review conversation. The notification may be in Chinese and English.',steps:['Your manager will schedule a probation review meeting','They will share their evaluation of your objectives and behaviours','Listen actively and ask questions — this is a two-way conversation','Receive a clear decision: Pass, Extend, or further discussion','If passed — congratulations, your onboarding journey is complete!','If extended — agree on specific improvements and a new timeline'],tip:{type:'tip',lbl:'For you',txt:'Reflect on your progress against the objectives set on Day 1 so you can have a meaningful conversation with your manager.'}},
+      'cn-mgr-prob':{who:'mgr',tag:'Line Manager · End of Probation',head:'Confirm the probation decision',when:"At the end of the associate's probation period",body:'Confirm the outcome in Workday and deliver feedback in a direct face-to-face probation review. All Workday notifications at this stage are bilingual (Chinese/English).',steps:['Complete the probation review evaluation in Workday','Select your decision: Pass / Extend / Not Pass','Schedule a face-to-face probation review meeting','Share your evaluation — objectives, behaviours, and overall performance','Provide specific development feedback regardless of the outcome','Submit in Workday — HR will be notified and next steps follow automatically'],tip:{type:'note',lbl:'This is the moment',txt:"Be clear, honest, and respectful. Whether passing or extending, your feedback sets the tone for the associate's career at Thai Wah."}}
+    }
+  }
+}};
+
+// Thai translations for journey data
+JD.th = JSON.parse(JSON.stringify(JD.en)); // deep copy, override below
+
+const TH_JOURNEY = {
+  'th-monthly':{
+    title:'เส้นทาง Onboarding — พนักงานรายเดือน (ประเทศไทย)',
+    desc:'เส้นทาง Onboarding เต็มรูปแบบสำหรับพนักงานรายเดือนในประเทศไทย ครอบคลุมตั้งแต่วันที่ 1 จนถึงสิ้นสุดช่วงทดลองงาน รวมถึงการกำหนดเป้าหมาย เอกสาร แบบสอบถาม และการยืนยันผลทดลองงาน',
+    milestones:[
+      {assoc:[{id:'tm-w',l:'งานที่ต้องทำ',t:'ข้อความต้อนรับ',s:'อ่าน To Do การ Onboarding ของคุณ'},{id:'tm-p',l:'งาน',t:'อัปเดตโปรไฟล์ของคุณ',s:'ข้อมูลติดต่อ รูปภาพ และผู้ติดต่อฉุกเฉิน'}],mgr:[{id:'tm-mo',l:'Line Manager · งานที่ต้องทำ',t:'ตั้งค่าเนื้อหาการรีวิวช่วงทดลองงาน',s:'กำหนดเป้าหมายและพฤติกรรมใน Workday'}]},
+      {assoc:[{id:'tm-wk',l:'งานที่ต้องทำ',t:'สรุปสัปดาห์แรกของคุณ',s:'ทบทวนประสบการณ์สัปดาห์แรก'},{id:'tm-d1',l:'รีวิวเอกสาร',t:'รีวิวเอกสาร Onboarding',s:'เอกสาร 3 ฉบับที่ต้องอ่านและรับทราบ'}],mgr:[]},
+      {assoc:[{id:'tm-sv',l:'แบบสอบถาม + เอกสาร',t:'แบบสอบถาม Onboarding และเอกสาร',s:'เอกสาร 2 ฉบับ + ตอบแบบสอบถาม'}],mgr:[]},
+      {assoc:[{id:'tm-rm',l:'Email แจ้งเตือน',t:'Reminder แบบสอบถาม',s:'หากยังไม่ได้ทำแบบสอบถามถึงวันที่ 30'}],mgr:[{id:'tm-mc',l:'Line Manager · Workday แจ้งเตือน',t:'ประเมินการทดลองงาน — ผ่านหรือพัฒนา',s:'ให้คะแนนเป้าหมาย พฤติกรรม และ Feedback'},{id:'tm-hr',l:'HR ดำเนินการ',t:'HR Check-in กับพนักงาน',s:'หลังจากส่งแบบสอบถามแล้ว'}]},
+      {assoc:[{id:'tm-assoc-prob',l:'พนักงาน · ผลการทดลองงาน',t:'รับผลการทดลองงานและ Feedback',s:'ผู้จัดการแจ้งผลและให้ Feedback เพื่อพัฒนาต่อ'}],mgr:[{id:'tm-mgr-prob',l:'Line Manager · การดำเนินการ',t:'ยืนยันผลการทดลองงาน',s:'Submit ผ่าน / ต่อเวลา / ไม่ผ่าน ใน Workday'}]}
+    ],
+    det:{
+      'tm-w':{head:'ยินดีต้อนรับสู่ไทยวา!',when:'ปรากฏใน Workday inbox วันแรกที่เริ่มงาน',body:'งานแรกของคุณคือการอ่านข้อความต้อนรับนี้ มันจะบอกทุกสิ่งที่คุณต้องรู้เกี่ยวกับสัปดาห์แรก',steps:['เปิด To Do ใน Workday inbox ของคุณ','อ่านข้อความต้อนรับอย่างละเอียด','ตรวจสอบอุปกรณ์ IT — ติดต่อ helpdesk@taiwah.com หากมีปัญหา','สังเกตสิ่งที่จะเกิดขึ้นในสัปดาห์นี้','กด Complete เมื่อเสร็จแล้ว'],tip:{type:'tip',lbl:'เคล็ดลับ',txt:'ใช้เวลาเพียง 5–10 นาที อย่าข้ามขั้นตอนนี้ — มีข้อมูลติดต่อสำคัญที่คุณจะต้องใช้'}},
+      'tm-p':{head:'อัปเดตโปรไฟล์ Workday ของคุณ',when:'ทำพร้อมกับข้อความต้อนรับในวันที่ 1',body:'ตรวจสอบให้แน่ใจว่าข้อมูลส่วนตัวของคุณใน Workday ครบถ้วนและถูกต้อง HR และผู้จัดการของคุณต้องการข้อมูลนี้',steps:['ไปที่โปรไฟล์ Workday ของคุณ','อัปเดตข้อมูลส่วนตัว — ชื่อ-นามสกุล เบอร์โทร ที่อยู่','เพิ่มผู้ติดต่อฉุกเฉินอย่างน้อยหนึ่งคน','อัปโหลดรูปถ่ายโปรไฟล์ที่ชัดเจน','Submit — ทีม HR จะได้รับการแจ้งเตือนอัตโนมัติ'],tip:{type:'tip',lbl:'เคล็ดลับ',txt:'โปรไฟล์ที่ครบถ้วนช่วยให้เพื่อนร่วมงานค้นหาและจดจำคุณได้ ใช้เวลา 15 นาทีทำให้ครบถ้วน'}},
+      'tm-mo':{who:'mgr',tag:'Line Manager · งานที่ต้องทำ · วันที่ 1',head:'ตั้งค่าเนื้อหาการรีวิวช่วงทดลองงาน',when:'ปรากฏใน Workday inbox เมื่อพนักงานใหม่ของคุณเริ่มงาน',body:'ในฐานะ Line Manager ความรับผิดชอบแรกของคุณคือการตั้งค่าการรีวิวช่วงทดลองงานใน Workday ขั้นตอนนี้จะสร้างกรอบการทำงาน — เป้าหมายและพฤติกรรมที่คาดหวัง — ที่คุณจะใช้ประเมินพนักงานเมื่อสิ้นสุดช่วงทดลองงาน ใช้เวลาไม่เกิน 5 นาที และต้องดำเนินการใน Week 1',tip:{type:'note',lbl:'ทำไมสิ่งนี้จึงสำคัญ',txt:'เป้าหมายและพฤติกรรมที่คุณกำหนดที่นี่เป็นพื้นฐานในการตัดสินใจช่วงทดลองงาน — ผ่าน ต่อเวลา หรือไม่ผ่าน กำหนดให้ชัดเจนตั้งแต่ต้นเพื่อให้พนักงานรู้ว่าความสำเร็จหมายถึงอะไรตั้งแต่วันแรก'}},
+      'tm-wk':{head:'สรุปสัปดาห์แรกของคุณ',when:'ปรากฏ 1 สัปดาห์หลังจากวันที่เริ่มงาน',body:'ในตอนท้ายของสัปดาห์แรก ทบทวนประสบการณ์ของคุณ งานสั้น ๆ ที่ช่วยให้คุณหยุดและประเมินสิ่งต่าง ๆ',steps:['เปิด To Do จาก Workday inbox','คิดว่าอะไรที่ดีและอะไรที่ยังต้องการความช่วยเหลือ','หากมีข้อกังวล — ติดต่อ HR Partner หรือผู้จัดการของคุณ','กด Complete'],tip:{type:'tip',lbl:'เคล็ดลับ',txt:'อย่าลังเลที่จะแจ้งปัญหาตั้งแต่เนิ่น ๆ ความคิดเห็นของคุณช่วย HR ปรับปรุงการ Onboarding'}},
+      'tm-d1':{head:'รีวิวเอกสาร Onboarding',when:'ส่งมอบ 1 สัปดาห์หลังจากวันที่เริ่มงาน',body:'คุณจะถูกขอให้อ่านและรับทราบเอกสาร 3 ฉบับที่สำคัญ ครอบคลุมนโยบายที่ทุกคนในไทยวาต้องทราบ',steps:['เปิดงาน Review Documents ใน Workday','อ่านเอกสารแต่ละฉบับอย่างละเอียด — ต้องทำทั้ง 3 ฉบับ','คลิก Acknowledge บนเอกสารแต่ละฉบับหลังอ่าน','หากมีคำถาม ถามคุณ HR Partner'],tip:{type:'note',lbl:'หมายเหตุ',txt:'การ Acknowledge เอกสารเหล่านี้เป็นบันทึกอย่างเป็นทางการ ตรวจสอบให้แน่ใจว่าอ่านจริงก่อนคลิก'}},
+      'tm-sv':{head:'แบบสอบถาม Onboarding และเอกสาร',when:'ส่งมอบ 15 วันหลังจากวันที่เริ่มงาน',body:'วันที่ 15 คุณต้องทำ 2 สิ่ง: เอกสารรอบที่ 2 และแบบสอบถาม Onboarding HR ใช้ข้อเสนอแนะของคุณเพื่อ Check-in กับคุณและผู้จัดการ',steps:['เปิด Review Documents — อ่านและ Acknowledge 2 ฉบับ','เปิด Complete Questionnaire','ตอบคำถามอย่างตรงไปตรงมา — ข้อมูลเป็นความลับ','Submit แบบสอบถาม'],tip:{type:'note',lbl:'สำคัญ',txt:'เมื่อคุณส่งแบบสอบถาม HR จะได้รับการแจ้งเตือนและอาจติดต่อเพื่อ Check-in กับคุณ'}},
+      'tm-rm':{head:'Email Reminder แบบสอบถาม',when:'ส่งอัตโนมัติวันที่ 30 หากยังไม่ได้ทำแบบสอบถาม',body:'หากคุณยังไม่ได้ทำแบบสอบถาม Onboarding คุณจะได้รับ Email Reminder อัตโนมัติ',steps:['ตรวจสอบ Email สำหรับ Reminder จากทีม HR','เข้าสู่ระบบ Workday และทำแบบสอบถาม','Submit ก่อนวันที่ 45 เพื่อให้ HR Check-in ตามกำหนด'],tip:{type:'tip',lbl:'หลีกเลี่ยง Reminder',txt:'ทำแบบสอบถามวันที่ 15 และคุณจะไม่ได้รับ Email นี้เลย!'}},
+      'tm-mc':{who:'mgr',tag:'Line Manager · Workday แจ้งเตือน · วันที่ 45',head:'ประเมินการทดลองงาน — ผ่านหรือพัฒนา',when:'Workday แจ้งเตือนคุณที่วันที่ 45 ของการ Onboarding พนักงานใหม่',body:'ที่วันที่ 45 Workday จะแจ้งเตือนให้คุณดำเนินการประเมินช่วงทดลองงาน นี่คือขั้นตอนที่คุณประเมินผลงานของพนักงานอย่างเป็นทางการ เทียบกับเป้าหมายและพฤติกรรมที่กำหนดไว้ตั้งแต่วันที่ 1 เพื่อสนับสนุนการตัดสินใจและให้ Feedback สำหรับการพัฒนาต่อไป',steps:['เปิดงานรีวิวช่วงทดลองงานใน Workday','ให้คะแนนการบรรลุเป้าหมายแต่ละข้อของพนักงาน','ประเมินพฤติกรรมที่พนักงานแสดงออกมา','เขียน Feedback ที่ชัดเจนและสร้างสรรค์เพื่อพัฒนาพนักงาน','ทำการแนะนำ: ผ่าน / ต่อเวลา / ไม่ผ่าน','Submit — HR จะได้รับแจ้งและดำเนินขั้นตอนถัดไป'],tip:{type:'note',lbl:'การตัดสินใจนี้สำคัญ',txt:'การประเมินของคุณกำหนดผลช่วงทดลองงานโดยตรง ให้ข้อมูลที่เฉพาะเจาะจงและมีหลักฐานสนับสนุน หากมีจุดที่ต้องพัฒนา ให้ Feedback ที่นำไปปฏิบัติได้จริงเพื่อสนับสนุนการเติบโตของพนักงาน'}},
+      'tm-hr':{head:'HR Check-in กับพนักงาน',when:'เกิดขึ้นเมื่อพนักงานส่งแบบสอบถาม Onboarding',body:'HR จะได้รับการแจ้งเตือน Workday และจะติดต่อเพื่อ Check-in นี่เป็นส่วนมาตรฐานของกระบวนการ',steps:['HR Partner ได้รับการแจ้งเตือน Workday อัตโนมัติ','HR ตรวจสอบผลแบบสอบถาม','HR Check-in กับพนักงานเพื่อพูดคุยเรื่องความก้าวหน้า','HR อาจติดต่อผู้จัดการด้วยหากจำเป็นต้องดำเนินการต่อ'],tip:{type:'tip',lbl:'สำหรับผู้จัดการ',txt:'ตรวจสอบให้แน่ใจว่าพนักงานใหม่รู้สึกสบายใจที่จะตอบแบบสอบถามอย่างตรงไปตรงมา'}},
+      'tm-assoc-prob':{who:'assoc',tag:'พนักงาน · สิ้นสุดช่วงทดลองงาน',head:'รับผลการทดลองงานและ Feedback',when:'เมื่อสิ้นสุดช่วงทดลองงานของคุณ',body:'Line Manager ของคุณจะดำเนินการประเมินช่วงทดลองงานอย่างเป็นทางการใน Workday และแจ้งผลให้คุณทราบในการสนทนาแบบตัวต่อตัว นี่คือจุดสำคัญ — การสนทนาที่มีโครงสร้างชัดเจนเกี่ยวกับผลงาน การเติบโต และขั้นตอนถัดไป',steps:['ผู้จัดการจะนัดประชุมรีวิวช่วงทดลองงานกับคุณ','พวกเขาจะแจ้งผลการประเมินเป้าหมายและพฤติกรรมของคุณ','รับฟังอย่างตั้งใจและถามคำถาม — นี่คือการสนทนาสองทาง','รับผลการตัดสินใจที่ชัดเจน: ผ่าน / ต่อเวลา / หรือพูดคุยเพิ่มเติม','หากผ่าน — ยินดีด้วย เส้นทาง Onboarding ของคุณเสร็จสมบูรณ์!','หากต่อเวลา — ตกลงจุดที่ต้องปรับปรุงและ Timeline ใหม่'],tip:{type:'tip',lbl:'สำหรับคุณ',txt:'เตรียมตัวให้พร้อม ทบทวนความก้าวหน้าของตัวเองเทียบกับเป้าหมายที่กำหนดไว้ตั้งแต่วันที่ 1 เพื่อให้การสนทนากับผู้จัดการมีความหมาย'}},
+      'tm-mgr-prob':{who:'mgr',tag:'Line Manager · สิ้นสุดช่วงทดลองงาน',head:'ยืนยันผลการทดลองงาน',when:'เมื่อสิ้นสุดช่วงทดลองงานของพนักงาน',body:'นี่คือจุดที่เส้นทาง Onboarding ปิดอย่างเป็นทางการ คุณได้ประเมินเป้าหมายและพฤติกรรมของพนักงานแล้ว — ตอนนี้ยืนยันผลใน Workday และแจ้งผลโดยตรงในการสนทนาแบบตัวต่อตัว',steps:['ดำเนินการประเมินช่วงทดลองงานใน Workday ให้เสร็จสมบูรณ์','เลือกผลการตัดสินใจ: ผ่าน / ต่อเวลา / ไม่ผ่าน','นัดประชุมรีวิวช่วงทดลองงานแบบตัวต่อตัวกับพนักงาน','แจ้งผลการประเมินอย่างชัดเจน — เป้าหมาย พฤติกรรม และผลงานโดยรวม','ให้ Feedback เพื่อพัฒนาที่เฉพาะเจาะจง ไม่ว่าผลจะเป็นอะไร','Submit ใน Workday — HR จะได้รับแจ้งและดำเนินขั้นตอนถัดไปโดยอัตโนมัติ'],tip:{type:'note',lbl:'นี่คือช่วงเวลาสำคัญ',txt:'การสนทนาที่ชัดเจน ซื่อสัตย์ และให้เกียรติในขั้นตอนนี้จะกำหนดทิศทางอาชีพของพนักงานที่ไทยวา หากผ่าน — ยินดีกับความสำเร็จและวางรากฐานสำหรับก้าวต่อไป หากต่อเวลาหรือไม่ผ่าน — ให้ข้อมูลที่เฉพาะเจาะจง เป็นธรรม และมุ่งเน้นการพัฒนา'}}
+    }
+  }
+};
+
+// Apply Thai overrides for th-monthly
+Object.keys(TH_JOURNEY['th-monthly'].det).forEach(k=>{
+  const ov = TH_JOURNEY['th-monthly'].det[k];
+  Object.assign(JD.th['th-monthly'].det[k], ov);
+});
+JD.th['th-monthly'].title = TH_JOURNEY['th-monthly'].title;
+JD.th['th-monthly'].desc = TH_JOURNEY['th-monthly'].desc;
+TH_JOURNEY['th-monthly'].milestones.forEach((m,i)=>{
+  if(JD.th['th-monthly'].milestones[i]){
+    JD.th['th-monthly'].milestones[i].assoc = m.assoc;
+    JD.th['th-monthly'].milestones[i].mgr = m.mgr;
+  }
+});
+
+// ── RENDER ───────────────────────────────────────────────────────
+function setLang(l){
+  LANG = l;
+  document.body.classList.toggle('lang-th', l==='th');
+  document.getElementById('btn-en').classList.toggle('active', l==='en');
+  document.getElementById('btn-th').classList.toggle('active', l==='th');
+  const t = T[l];
+  // landing text
+  document.getElementById('lh-title').innerHTML = t.lhTitle.replace('\n','<br>');
+  document.getElementById('lh-sub').textContent = t.lhSub;
+  document.getElementById('lq-text').textContent = t.lqText;
+  document.getElementById('ls-text').textContent = t.lsText;
+  document.getElementById('footer-land').textContent = t.footer;
+  document.getElementById('footer-journey').textContent = t.footer;
+  document.getElementById('back-btn').textContent = t.backBtn;
+  document.getElementById('lane-assoc').textContent = t.laneAssoc;
+  document.getElementById('lane-mid').textContent = t.laneMid;
+  document.getElementById('lane-mgr').textContent = t.laneMgr;
+  // card texts
+  document.getElementById('jc-tm-country').textContent = t.jcTmCountry;
+  document.getElementById('jc-tm-type').textContent = t.jcTmType;
+  document.getElementById('jc-tm-desc').textContent = t.jcTmDesc;
+  document.getElementById('jc-td-country').textContent = t.jcTdCountry;
+  document.getElementById('jc-td-type').textContent = t.jcTdType;
+  document.getElementById('jc-td-desc').textContent = t.jcTdDesc;
+  document.getElementById('jc-td-pill').textContent = t.jcTdPill;
+  document.getElementById('jc-kh-country').textContent = t.jcKhCountry;
+  document.getElementById('jc-kh-type').textContent = t.jcKhType;
+  document.getElementById('jc-kh-desc').textContent = t.jcKhDesc;
+  document.getElementById('jc-vn-country').textContent = t.jcVnCountry;
+  document.getElementById('jc-vn-type').textContent = t.jcVnType;
+  document.getElementById('jc-vn-desc').textContent = t.jcVnDesc;
+  document.getElementById('jc-cn-country').textContent = t.jcCnCountry;
+  document.getElementById('jc-cn-type').textContent = t.jcCnType;
+  document.getElementById('jc-cn-desc').textContent = t.jcCnDesc;
+  // re-render current journey if open
+  if(CURRENT_JOURNEY) showJourney(CURRENT_JOURNEY);
+}
+
+function mgrObjHTML(ctx){
+  const t = T[LANG];
+  const note = t.mgrObjCtxNote[ctx] || t.mgrObjCtxNote['Thailand'];
+  return `<div class="inst-steps">
+    <div class="inst-step">
+      <div class="inst-num">1</div>
+      <div class="inst-body">
+        <div class="inst-title">${t.mgrObjStep1Title}</div>
+        <div class="mock-search"><span style="color:var(--muted);font-size:14px;">🔍</span><span class="mock-search-q">${t.mgrObjSearch}</span><span class="mock-search-x">⊗</span></div>
+        <div class="inst-sub" style="margin-top:8px;">${t.mgrObjStep1Sub}</div>
+      </div>
+    </div>
+    <div class="inst-step">
+      <div class="inst-num">2</div>
+      <div class="inst-body">
+        <div class="inst-title">${t.mgrObjStep2Title}</div>
+        <div class="mock-screen">
+          <div class="mock-titlebar"><span>Start Performance Review for Employee</span><div class="mock-icons"><div class="mock-icon">🔖</div><div class="mock-icon">✕</div></div></div>
+          <div class="mock-body">
+            <div class="mock-row"><div class="mock-lbl">Employee<span class="req">*</span></div><div class="mock-input"><div class="mock-chip"><span style="color:var(--muted);font-size:10px;">×</span> Associate Name</div></div></div>
+            <div class="mock-row" style="align-items:flex-start;">
+              <div class="mock-lbl" style="padding-top:8px;">Review Template<span class="req">*</span></div>
+              <div style="flex:1;">
+                <div class="mock-input" style="margin-bottom:10px;"><div class="mock-chip"><span style="color:var(--muted);font-size:10px;">×</span> Probation Evaluation (Associate Level)</div></div>
+                <div class="tmpl-row"><div class="tmpl-badge tb-blue">${t.mgrObjAssocLabel}</div><div class="tmpl-note">${t.mgrObjAssocNote}</div></div>
+                <div class="tmpl-row" style="margin-top:6px;"><div class="tmpl-badge tb-amber">${t.mgrObjLeaderLabel}</div><div class="tmpl-note">${t.mgrObjLeaderNote}</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inst-step">
+      <div class="inst-num">3</div>
+      <div class="inst-body">
+        <div class="inst-title">${t.mgrObjStep3Title}</div>
+        <div class="mock-screen">
+          <div class="mock-body">
+            <div class="mock-row"><div class="mock-lbl">Period Start Date<span class="req">*</span></div><div class="mock-input"><span style="font-size:12px;color:var(--text);">${t.mgrObjStartDate}</span><span class="mock-cal">📅</span></div></div>
+            <div class="mock-row"><div class="mock-lbl">Period End Date<span class="req">*</span></div><div class="mock-input"><span style="font-size:12px;color:var(--text);">${t.mgrObjEndDate}</span><span class="mock-cal">📅</span></div></div>
+            <div class="date-hint">${t.mgrObjDateHint}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dnote" style="margin-top:4px;"><strong>${LANG==='th'?'หมายเหตุ':'Note'}:</strong> ${note}</div>`;
+}
+
+function showJourney(key){
+  CURRENT_JOURNEY = key;
+  const j = (JD[LANG]||JD.en)[key] || JD.en[key];
+  const t = T[LANG];
+  document.getElementById('nav-title').textContent = j.flag+' '+j.sub;
+  document.getElementById('jhdr').innerHTML=`
+    <div class="jhdr-top">
+      <div class="jh-flag">${j.flag}</div>
+      <div>
+        <div class="jsub" style="color:var(--${j.color})">${j.sub}</div>
+        <div class="jtitle">${j.title}</div>
+      </div>
+    </div>
+    <div class="jdescr">${j.desc}</div>
+  `;
+  let html='';
+  j.milestones.forEach((m,mi)=>{
+    const dotLbl = getDotLbl(m.dot, t);
+    const ac = m.assoc.map(c=>cHTML(c,'assoc')).join('');
+    const mc = m.mgr.map(c=>cHTML(c,'mgr')).join('');
+    html+=`<div class="mrow">
+      <div class="ccol">${ac}</div>
+      <div class="tcenter"><div class="tline"></div><div class="tdot ${m.dot}">${dotLbl}</div></div>
+      <div class="ccol right">${mc}</div>
+    </div>`;
+    [...m.assoc,...m.mgr].forEach(c=>{ html+=dpHTML(c.id, j.det[c.id]); });
+    if(mi<j.milestones.length-1) html+=`<div class="srow"><div class="sline"></div></div>`;
+  });
+  html+=`<div class="crow"><div class="cbadge">${t.complete}</div></div>`;
+  document.getElementById('jcontent').innerHTML = html;
+  document.getElementById('landing').classList.remove('active');
+  document.getElementById('journey-page').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function getDotLbl(dot, t){
+  const map={dd1:t.dotDay1,dw1:t.dotWeek1,dd15:t.dotDay15,dd20:t.dotDay20,dd45:t.dotDay45,ddprob:t.dotProb};
+  return (map[dot]||dot).replace('\n','<br>');
+}
+
+function cHTML(c,who){
+  const arr = who==='mgr'?'←':'→';
+  return `<div class="card ${who}" onclick="toggleD('${c.id}')">
+    <div class="clbl">${c.l}</div>
+    <div class="ctitle">${c.t}</div>
+    <div class="csub">${c.s}</div>
+    <span class="carr">${arr}</span>
+  </div>`;
+}
+
+function dpHTML(id,d){
+  if(!d) return '';
+  const tc = d.tip.type==='note'?'dnote':'dtip';
+  const body_content = d.isMgrObj
+    ? mgrObjHTML(d.ctx||'Thailand')
+    : `<ul class="dsteps ${d.who}">${(d.steps||[]).map((s,i)=>`<li><div class="sn">${i+1}</div><span>${s}</span></li>`).join('')}</ul>`;
+  return `<div class="dpanel ${d.who}" id="dp-${id}">
+    <button class="dclose" onclick="closeD('${id}')">✕</button>
+    <div class="dtag ${d.who}">${d.tag||''}</div>
+    <div class="dhead">${d.head||''}</div>
+    <div class="dwhen">${d.when||''}</div>
+    <div class="dbody">${d.body||''}</div>
+    ${body_content}
+    <div class="${tc}"><strong>${d.tip.lbl}:</strong> ${d.tip.txt}</div>
+  </div>`;
+}
+
+function toggleD(id){
+  const p = document.getElementById('dp-'+id);
+  if(!p) return;
+  if(p.classList.contains('show')){
+    p.classList.remove('show');
+    document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+    return;
+  }
+  document.querySelectorAll('.dpanel').forEach(x=>x.classList.remove('show'));
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  p.classList.add('show');
+  document.querySelectorAll('.card').forEach(c=>{
+    if(c.getAttribute('onclick')===`toggleD('${id}')`) c.classList.add('active');
+  });
+  setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+}
+
+function closeD(id){
+  const p=document.getElementById('dp-'+id);
+  if(p) p.classList.remove('show');
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+}
+
+function goBack(){
+  document.getElementById('journey-page').classList.remove('active');
+  document.getElementById('landing').classList.add('active');
+  CURRENT_JOURNEY = null;
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
